@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { Play, ExternalLink } from 'lucide-react';
 
@@ -9,15 +9,6 @@ const Portfolio: React.FC = () => {
   });
 
   const [activeFilter, setActiveFilter] = useState('all');
-  const [videoLoaded, setVideoLoaded] = useState(false);
-  const [playingVideos, setPlayingVideos] = useState<{ [key: number]: boolean }>({});
-
-  const toggleVideo = (videoId: number) => {
-    setPlayingVideos(prev => ({
-      ...prev,
-      [videoId]: !prev[videoId]
-    }));
-  };
 
   const portfolioItems = [
     // My Best - 4 videos
@@ -96,7 +87,10 @@ const Portfolio: React.FC = () => {
   useEffect(() => {
     console.log('Portfolio component mounted');
     console.log('Portfolio items:', portfolioItems);
+    console.log('Video files should be at:', portfolioItems.map(item => item.thumbnail));
   }, []);
+
+
 
   return (
     <section id="portfolio" className="py-16 sm:py-20 md:py-24 relative overflow-hidden bg-gray-50">
@@ -135,63 +129,13 @@ const Portfolio: React.FC = () => {
                 className="group relative bg-white bg-opacity-90 backdrop-blur-md rounded-2xl sm:rounded-3xl overflow-hidden border border-white border-opacity-20 hover:border-opacity-40 transition-all duration-300 shadow-md"
               >
                 {/* Video */}
-                <div className="relative w-full aspect-[9/16] overflow-hidden bg-gray-200">
-                  <video 
-                    ref={(el) => {
-                      if (el) {
-                        el.onloadedmetadata = () => {
-                          console.log(`Video ${item.id} loaded:`, item.thumbnail);
-                          setVideoLoaded(true);
-                        };
-                        el.onerror = (e) => {
-                          console.error(`Video ${item.id} error:`, e, item.thumbnail);
-                        };
-                        el.onloadstart = () => {
-                          console.log(`Video ${item.id} loading started:`, item.thumbnail);
-                        };
-                        if (playingVideos[item.id]) {
-                          el.play().catch(err => console.error(`Play error for video ${item.id}:`, err));
-                        } else {
-                          el.pause();
-                        }
-                      }
-                    }}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 cursor-pointer"
-                    muted={!playingVideos[item.id]}
-                    loop
-                    playsInline
-                    preload="metadata"
-                    onClick={() => toggleVideo(item.id)}
-                  >
-                    <source src={item.thumbnail} type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-                  
-                  {/* Fallback text if video doesn't load */}
-                  {!videoLoaded && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-gray-300">
-                      <div className="text-center text-gray-600">
-                        <p className="text-sm font-medium">{item.title}</p>
-                        <p className="text-xs">Loading video...</p>
-                      </div>
-                    </div>
-                  )}
-                  
-                  {/* Play/Pause Overlay */}
-                  <div 
-                    className="absolute inset-0 bg-black/30 flex items-center justify-center cursor-pointer"
-                    onClick={() => toggleVideo(item.id)}
-                  >
-                    {playingVideos[item.id] ? (
-                      <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                        <div className="w-0 h-0 border-l-[12px] border-l-white border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent ml-1"></div>
-                      </div>
-                    ) : (
-                      <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                        <Play className="w-8 h-8 text-white" />
-                      </div>
-                    )}
-                  </div>
+                <div className="aspect-[9/16] bg-black rounded-2xl overflow-hidden shadow-lg flex items-center justify-center">
+                  <video
+                    src={item.thumbnail}
+                    className="w-full h-full object-cover"
+                    controls
+                    style={{ aspectRatio: '9/16' }}
+                  />
                 </div>
 
                 {/* Content */}

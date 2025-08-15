@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Mail, Phone, MapPin, Instagram, Youtube, Twitter, Send, CheckCircle } from 'lucide-react';
+import emailjs from '@emailjs/browser';
 
 const Contact: React.FC = () => {
   const [ref, inView] = useInView({
@@ -18,12 +19,71 @@ const Contact: React.FC = () => {
   });
 
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate form submission
-    setIsSubmitted(true);
-    setTimeout(() => setIsSubmitted(false), 3000);
+    setIsLoading(true);
+    setError('');
+
+    try {
+      // Check if EmailJS is configured
+      if (import.meta.env.VITE_EMAILJS_SERVICE_ID && 
+          import.meta.env.VITE_EMAILJS_TEMPLATE_ID && 
+          import.meta.env.VITE_EMAILJS_PUBLIC_KEY) {
+        
+        // Send email using EmailJS
+        const result = await emailjs.send(
+          import.meta.env.VITE_EMAILJS_SERVICE_ID,
+          import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+          {
+            from_name: formData.name,
+            from_email: formData.email,
+            subject: formData.subject,
+            message: formData.message,
+            project_type: formData.projectType,
+            to_email: 'j.babi2129@gmail.com'
+          },
+          import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+        );
+
+        if (result.status === 200) {
+          setIsSubmitted(true);
+          // Reset form
+          setFormData({
+            name: '',
+            email: '',
+            subject: '',
+            message: '',
+            projectType: 'video'
+          });
+          setTimeout(() => setIsSubmitted(false), 3000);
+        }
+      } else {
+        // Fallback: Open email client
+        const emailBody = `
+Name: ${formData.name}
+Email: ${formData.email}
+Subject: ${formData.subject}
+Project Type: ${formData.projectType}
+
+Message:
+${formData.message}
+        `;
+        
+        const mailtoLink = `mailto:j.babi2129@gmail.com?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(emailBody)}`;
+        window.open(mailtoLink, '_blank');
+        
+        setIsSubmitted(true);
+        setTimeout(() => setIsSubmitted(false), 3000);
+      }
+    } catch (error) {
+      console.error('Email sending failed:', error);
+      setError('Failed to send message. Please try again or contact directly via email/phone.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -169,13 +229,21 @@ const Contact: React.FC = () => {
                 type="submit"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                disabled={isSubmitted}
+                disabled={isSubmitted || isLoading}
                 className="w-full bg-[#0E1E40] text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg sm:rounded-xl font-semibold text-base sm:text-lg shadow-lg sm:shadow-xl hover:shadow-2xl transition-all duration-300 flex items-center justify-center space-x-2 sm:space-x-3 font-['Poppins'] disabled:opacity-50"
               >
                 {isSubmitted ? (
                   <>
                     <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5" />
                     <span>Message Sent!</span>
+                  </>
+                ) : isLoading ? (
+                  <>
+                    <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>Sending...</span>
                   </>
                 ) : (
                   <>
@@ -184,6 +252,9 @@ const Contact: React.FC = () => {
                   </>
                 )}
               </motion.button>
+              {error && (
+                <p className="text-red-500 text-sm text-center mt-2 font-['Roboto']">{error}</p>
+              )}
             </form>
           </motion.div>
 
