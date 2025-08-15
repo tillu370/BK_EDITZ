@@ -27,7 +27,7 @@ const Portfolio: React.FC = () => {
       category: 'mybest',
       type: 'My Best',
       thumbnail: '/video1.mp4',
-      description: 'Your best video description here'
+      description: ''
     },
     {
       id: 2,
@@ -35,7 +35,7 @@ const Portfolio: React.FC = () => {
       category: 'mybest',
       type: 'My Best',
       thumbnail: '/video2.mp4',
-      description: 'Your best video description here'
+      description: ''
     },
     {
       id: 3,
@@ -43,7 +43,7 @@ const Portfolio: React.FC = () => {
       category: 'mybest',
       type: 'My Best',
       thumbnail: '/video3.mp4', // Reusing existing images
-      description: 'Your best video description here'
+      description: ''
     },
     {
       id: 4,
@@ -51,7 +51,7 @@ const Portfolio: React.FC = () => {
       category: 'mybest',
       type: 'My Best',
       thumbnail: '/video4.mp4', // Reusing existing images
-      description: 'Your best video description here'
+      description: ''
     },
     // Recreations - 2 videos
     {
@@ -60,7 +60,7 @@ const Portfolio: React.FC = () => {
       category: 'recreations',
       type: 'Recreations',
       thumbnail: '/recreation1.mp4',
-      description: 'Your recreation video description here'
+      description: ''
     },
     {
       id: 6,
@@ -68,7 +68,7 @@ const Portfolio: React.FC = () => {
       category: 'recreations',
       type: 'Recreations',
       thumbnail: '/recreation2.mp4',
-      description: 'Your recreation video description here'
+      description: ''
     },
     // Others - 1 video
     {
@@ -77,7 +77,7 @@ const Portfolio: React.FC = () => {
       category: 'others',
       type: 'Others',
       thumbnail: '/other1.mp4',
-      description: 'Your other video description here'
+      description: ''
     }
   ];
 
