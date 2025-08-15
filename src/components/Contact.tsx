@@ -37,19 +37,19 @@ const Contact: React.FC = () => {
     {
       icon: Mail,
       title: 'Email',
-      value: 'hello@bkedits.com',
-      link: 'mailto:hello@bkedits.com'
+      value: 'j.babi2129@gmail.com',
+      link: 'mailto:j.babi2129@gmail.com'
     },
     {
       icon: Phone,
       title: 'Phone',
-      value: '+1 (555) 123-4567',
-      link: 'tel:+15551234567'
+      value: '6302929574',
+      link: 'tel:6302929574'
     },
     {
       icon: MapPin,
       title: 'Location',
-      value: 'Los Angeles, CA',
+      value: 'India',
       link: '#'
     }
   ];
@@ -58,20 +58,14 @@ const Contact: React.FC = () => {
     {
       icon: Instagram,
       name: 'Instagram',
-      url: 'https://instagram.com/bkedits',
+      url: 'https://www.instagram.com/bk.edits01/',
       color: 'hover:text-pink-400'
     },
     {
       icon: Youtube,
       name: 'YouTube',
-      url: 'https://youtube.com/bkedits',
+      url: 'https://www.youtube.com/@bk.edits01',
       color: 'hover:text-red-400'
-    },
-    {
-      icon: Twitter,
-      name: 'Twitter',
-      url: 'https://twitter.com/bkedits',
-      color: 'hover:text-blue-400'
     }
   ];
 
