@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { Play, Image, ExternalLink } from 'lucide-react';
+import { Play, ExternalLink } from 'lucide-react';
 
 const Portfolio: React.FC = () => {
   const [ref, inView] = useInView({
@@ -104,24 +103,14 @@ const Portfolio: React.FC = () => {
       <div className="absolute inset-0 bg-white opacity-95"></div>
       
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" ref={ref}>
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-10 sm:mb-16"
-        >
+        <div className="text-center mb-10 sm:mb-16">
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#0E1E40] mb-3 sm:mb-4 font-chewy">Portfolio</h2>
           <p className="text-lg sm:text-xl text-[#1C5FB7] mb-6 sm:mb-8 font-montserrat">Showcasing my latest creative projects</p>
           <div className="w-16 sm:w-24 h-1 bg-gradient-to-r from-[#0E1E40] to-[#1C5FB7] mx-auto rounded-full"></div>
-        </motion.div>
+        </div>
 
         {/* Filter buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="flex flex-wrap justify-center gap-2 sm:gap-4 mb-6 sm:mb-8 md:mb-12 px-2 sm:px-4"
-        >
+        <div className="flex flex-wrap justify-center gap-2 sm:gap-4 mb-6 sm:mb-8 md:mb-12 px-2 sm:px-4">
           {filters.map((filter) => (
             <button
               key={filter.id}
@@ -135,22 +124,14 @@ const Portfolio: React.FC = () => {
               {filter.label}
             </button>
           ))}
-        </motion.div>
+        </div>
 
         {/* Portfolio grid */}
-        <motion.div
-          layout
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6 lg:gap-8"
-        >
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6 lg:gap-8">
           {filteredItems.length > 0 ? (
             filteredItems.map((item, index) => (
-              <motion.div
+              <div
                 key={item.id}
-                layout
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={inView ? { opacity: 1, scale: 1 } : {}}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                whileHover={{ y: -10 }}
                 className="group relative bg-white bg-opacity-90 backdrop-blur-md rounded-2xl sm:rounded-3xl overflow-hidden border border-white border-opacity-20 hover:border-opacity-40 transition-all duration-300 shadow-md"
               >
                 {/* Video */}
@@ -225,14 +206,14 @@ const Portfolio: React.FC = () => {
                   <h3 className="text-lg sm:text-xl font-bold text-[#0E1E40] mb-1 sm:mb-2 font-fredoka">{item.title}</h3>
                   <p className="text-[#1C5FB7] text-xs sm:text-sm font-montserrat">{item.description}</p>
                 </div>
-              </motion.div>
+              </div>
             ))
           ) : (
             <div className="col-span-full text-center py-10">
               <p className="text-lg text-[#0E1E40]">No portfolio items found in this category.</p>
             </div>
           )}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
